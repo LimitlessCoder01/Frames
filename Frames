@@ -1,0 +1,51 @@
+package org.ink;
+
+import java.util.Set;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Frames {
+	
+	public static void main(String[] args) {
+		
+		WebDriver driver= new ChromeDriver();
+		
+		driver.get("https://www.flipkart.com");
+		
+		driver.manage().window().maximize();
+		
+		driver.findElement(By.name("q")).sendKeys("iphone", Keys.ENTER);
+		
+		driver.findElement(By.xpath("(//div[@class='_4rR01T'])[1]")).click();
+		
+		//To get the parent id 
+		
+		String parent_ID = driver.getWindowHandle();
+		
+		System.out.println(parent_ID);
+		
+		//To get all the windows Id
+		
+		Set<String> all_ID = driver.getWindowHandles();
+		
+		System.out.println(all_ID);
+		
+		for (String string : all_ID) {
+			if (!parent_ID.equals(string)) {
+				driver.switchTo().window(string);
+			}
+		}
+		
+		
+		driver.findElement(By.xpath("//button[text()='Add to cart']")).click();
+		
+		driver.switchTo().window(parent_ID);
+		
+		driver.close();
+		
+	}
+	
+}
